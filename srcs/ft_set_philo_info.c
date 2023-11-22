@@ -6,11 +6,21 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:18:07 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/19 19:50:54 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/11/21 22:58:50 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
+
+int	ft_get_time(time_t *time_int)
+{
+	struct timeval	time_struct;
+
+	if (gettimeofday(&time_struct, NULL))
+		return (EXIT_FAILURE);
+	*time_int = 1000 * time_struct.tv_sec + time_struct.tv_usec / 1000;
+	return (EXIT_SUCCESS);
+}
 
 int	ft_set_philo_info(int argc, char **argv, t_philo_info *philo_info)
 {
@@ -35,7 +45,7 @@ int	ft_set_philo_info(int argc, char **argv, t_philo_info *philo_info)
 		return (EXIT_FAILURE);
 	if (argc == 5)
 		philo_info->nb_must_eat = NO_LIMIT;
-	if (gettimeofday(&philo_info->init_time, NULL))
+	if (ft_get_time(&philo_info->init_time))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

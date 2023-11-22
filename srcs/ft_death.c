@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/19 04:11:51 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/19 20:20:53 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/11/21 23:03:03 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ void	*ft_death(void *thread_arg_void)
 	t_death_thread_arg	*thread_arg;
 	t_bool				is_a_philo_dead;
 	int					i;
-	struct timeval		time;
-	time_t				time_stamp;
+	time_t				time;
 	
 	thread_arg = (t_death_thread_arg *)thread_arg_void;
 	is_a_philo_dead = false;
@@ -52,15 +51,14 @@ void	*ft_death(void *thread_arg_void)
 		i = 0;
 		while (i < thread_arg->philo_info.nb_philo)
 		{
-			if (gettimeofday(&time, NULL))
+			if (ft_get_time(&time))
 				return (NULL); //gerer les leaks
 			if (pthread_mutex_lock(thread_arg->mutex_tabs->time_last_meal + i))
 				return (NULL);
-			time_stamp = 1000 * (time.tv_sec - (*thread_arg->time_last_meal[i]).tv_sec)
-				+ (time.tv_usec  - (*thread_arg->time_last_meal[i]).tv_usec) / 1000;
+			time -= *thread_arg->time_last_meal[i];
 			if (pthread_mutex_unlock(thread_arg->mutex_tabs->time_last_meal + i))
 				return (NULL);
-			if (time_stamp > thread_arg->philo_info.time_to_die)
+			if (time > thread_arg->philo_info.time_to_die)
 				is_a_philo_dead = true;
 			if (is_a_philo_dead == true)
 			{

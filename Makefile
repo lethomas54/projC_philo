@@ -5,7 +5,7 @@ CFLAGS		:= 	-Wall -Wextra -Werror
 
 SRC			:=	main.c ft_philo_start.c ft_set_philo_info.c \
 				ft_philo.c ft_philo_action.c ft_thread_utils.c \
-				ft_death.c 
+				ft_death.c ft_philo_eating.c
 
 SRCS		:= $(addprefix ./srcs/, $(SRC))
 OBJ 		:= $(SRCS:.c=.o)

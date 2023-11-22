@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:00:30 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/19 18:24:51 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/11/22 01:14:14 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int ft_philo_start(t_philo_info philo_info, pthread_t **thread_tab,
 	if (ft_init_mutex_tabs(philo_info, *mutex_tabs))
 		return (EXIT_FAILURE);
 	if (ft_create_thread(philo_info, thread_tab, *mutex_tabs))
+		return (EXIT_FAILURE);
+	if (ft_thread_join(philo_info, thread_tab))
 		return (EXIT_FAILURE);
 	if (ft_destroy_mutex_tab(philo_info, mutex_tabs))
 		return (EXIT_FAILURE);
