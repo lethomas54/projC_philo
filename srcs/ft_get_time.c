@@ -1,29 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_philo_start.c                                   :+:      :+:    :+:   */
+/*   ft_get_time.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/18 22:00:30 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/22 01:14:14 by lethomas         ###   ########.fr       */
+/*   Created: 2023/11/22 02:24:21 by lethomas          #+#    #+#             */
+/*   Updated: 2023/11/22 02:24:46 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-int ft_philo_start(t_philo_info philo_info, pthread_t **thread_tab,
-	t_mutex_tabs **mutex_tabs)
+int	ft_get_time(time_t *time_int)
 {
-	if (ft_create_tabs(philo_info, thread_tab, mutex_tabs))
+	struct timeval	time_struct;
+
+	if (gettimeofday(&time_struct, NULL))
 		return (EXIT_FAILURE);
-	if (ft_init_mutex_tabs(philo_info, *mutex_tabs))
-		return (EXIT_FAILURE);
-	if (ft_create_thread(philo_info, thread_tab, *mutex_tabs))
-		return (EXIT_FAILURE);
-	if (ft_thread_join(philo_info, thread_tab))
-		return (EXIT_FAILURE);
-	if (ft_destroy_mutex_tab(philo_info, mutex_tabs))
-		return (EXIT_FAILURE);
+	*time_int = 1000 * time_struct.tv_sec + time_struct.tv_usec / 1000;
 	return (EXIT_SUCCESS);
 }
