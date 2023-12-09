@@ -5,15 +5,16 @@ CFLAGS		:= 	-Wall -Wextra -Werror
 
 SRC			:=	main.c ft_get_time.c \
 				ft_init_philo.c ft_create_philo.c ft_end_philo.c \
-				ft_philo.c ft_philo_action.c ft_philo_eating.c
+				ft_philo.c ft_philo_sleeping_thinking.c ft_philo_eating.c \
+				ft_philo_utils.c
 
 SRCS		:= $(addprefix ./srcs/, $(SRC))
 OBJ 		:= $(SRCS:.c=.o)
 INC			:= philosopher.h
 INCS		:= $(addprefix ./includes/, $(INC))
 
-LIBNAME = ./libft/libft.a
-LIBPATH = ./libft/
+LIBNAME = ../libft/libft.a
+LIBPATH = ../libft/
 
 all: $(NAME)
 
@@ -30,12 +31,12 @@ $(LIBNAME):
 	@$(COMP) $(CFLAGS) -c $< -o $@
 
 clean:
-	@make -C libft clean
+	@make -C $(LIBPATH) clean
 	@rm -f $(OBJ)
 	@echo "\033[0;31m$(NAME) clean: \033[0;32mOK\033[0;0m"
 
 fclean:
-	@make -C libft fclean
+	@make -C $(LIBPATH) fclean
 	@rm -f $(OBJ) $(NAME)
 	@echo "\033[0;31m$(NAME) fclean: \033[0;32mOK\033[0;0m"
 

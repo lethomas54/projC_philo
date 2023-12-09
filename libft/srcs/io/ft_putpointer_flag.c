@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putpointer_flag.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 18:03:39 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/17 16:24:39 by macbook          ###   ########.fr       */
+/*   Updated: 2023/11/27 19:20:29 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static void	ft_pointer_set_precision_sign_width(unsigned long int nb,
 		tab_flag[PRECISION] -= len;
 		len += tab_flag[PRECISION];
 	}
-	else 
+	else
 		tab_flag[PRECISION] = 0;
 	if (tab_flag[WIDTH] - len - 2 > 0)
 		tab_flag[WIDTH] -= (len - 2);
@@ -67,7 +67,7 @@ int	ft_putpointer_flag(int *nb_chr, unsigned long int nb, int *tab_flag)
 	if (ft_putstr_fd ("0x", 1))
 		return (1);
 	(*nb_chr) += 2;
-	while (!tab_flag[MINUS] && tab_flag[WIDTH] && tab_flag[WIDTH]-- 
+	while (!tab_flag[MINUS] && tab_flag[WIDTH] && tab_flag[WIDTH]--
 		&& ++(*nb_chr))
 		if (ft_putchar_fd ('0', 1))
 			return (1);

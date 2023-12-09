@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 14:13:31 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/17 17:11:14 by macbook          ###   ########.fr       */
+/*   Updated: 2023/11/30 10:29:10 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,13 @@ static int	ft_create_emptyline_bufferfromremaining(int *nbyte_read,
 	*line = (char *)ft_calloc (1, sizeof (char));
 	if (!*line)
 		return (1);
-	buffer_temp = (char *)malloc ((BUFFER_SIZE + 1) * sizeof (char));
+	buffer_temp = (char *)malloc(((unsigned long)BUFFER_SIZE + 1)
+			* sizeof (char));
 	if (!buffer_temp)
 		return (1);
 	buffer_temp[0] = 0;
 	if (*buffer)
-		ft_strlcpy (buffer_temp, *buffer, BUFFER_SIZE + 1);
+		ft_strlcpy (buffer_temp, *buffer, (unsigned long)BUFFER_SIZE + 1);
 	ft_free_all (NULL, buffer);
 	*buffer = buffer_temp;
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_flag.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/16 12:58:00 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/17 16:24:39 by macbook          ###   ########.fr       */
+/*   Updated: 2023/11/27 19:20:42 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static char	ft_set_precision_sign_width(long int nb, int *tab_flag, char info,
 	int		len;
 	char	sign;
 
-	*base = 10 * (info == 'd' || info == 'u' || info == 'i') 
+	*base = 10 * (info == 'd' || info == 'u' || info == 'i')
 		+ 16 * (info == 'x' || info == 'X');
 	len = ft_nb_digit (nb, *base);
 	if (tab_flag[PRECISION] - len > 0)
@@ -38,15 +38,15 @@ static char	ft_set_precision_sign_width(long int nb, int *tab_flag, char info,
 		tab_flag[PRECISION] -= len;
 		len += tab_flag[PRECISION];
 	}
-	else 
+	else
 		tab_flag[PRECISION] = 0;
-	sign = '-' * (nb < 0) + '+' * (tab_flag[PLUS] && nb >= 0) 
+	sign = '-' * (nb < 0) + '+' * (tab_flag[PLUS] && nb >= 0)
 		+ ' ' * (tab_flag[SPACE] && nb >= 0);
 	if (sign)
 		len++;
-	if (tab_flag[WIDTH] - len - 2 * ((info == 'x' || info == 'X') 
+	if (tab_flag[WIDTH] - len - 2 * ((info == 'x' || info == 'X')
 			&& tab_flag[HASH]) > 0)
-		tab_flag[WIDTH] -= len + 2 * ((info == 'x' || info == 'X') 
+		tab_flag[WIDTH] -= len + 2 * ((info == 'x' || info == 'X')
 				&& tab_flag[HASH]);
 	else
 		tab_flag[WIDTH] = 0;
@@ -83,7 +83,7 @@ static int	ft_putbefore_nbr_flag(int *nb_chr, int sign, int *tab_flag,
 	if (sign && ++(*nb_chr))
 		if (ft_putchar_fd (sign, 1))
 			return (1);
-	while (!tab_flag[MINUS] && tab_flag[ZERO] && tab_flag[WIDTH] 
+	while (!tab_flag[MINUS] && tab_flag[ZERO] && tab_flag[WIDTH]
 		&& !tab_flag[DOT] && tab_flag[WIDTH]-- && ++(*nb_chr))
 		if (ft_putchar_fd ('0', 1))
 			return (1);

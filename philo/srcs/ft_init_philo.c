@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_init_philo.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:17:16 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/23 17:16:44 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:12:57 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,16 @@ static int	ft_create_tabs(t_info info, pthread_t **thread_tab,
 {
 	*thread_tab = NULL;
 	*mutex_tabs = NULL;
-	*thread_tab = (pthread_t *)calloc((info.nb_philo),
-		sizeof(pthread_t));
+	*thread_tab = (pthread_t *)ft_calloc((info.nb_philo),
+			sizeof(pthread_t));
 	if (*thread_tab == NULL)
 		return (EXIT_FAILURE);
-	*mutex_tabs = (t_mutex_tabs *)calloc(1, sizeof(t_mutex_tabs));
+	*mutex_tabs = (t_mutex_tabs *)ft_calloc(1, sizeof(t_mutex_tabs));
 	if (*mutex_tabs == NULL)
 		return (EXIT_FAILURE);
-	(*mutex_tabs)->fork = (pthread_mutex_t *)calloc((info.nb_philo),
-		sizeof(pthread_mutex_t));
+	(*mutex_tabs)->fork = (pthread_mutex_t *)ft_calloc((info.nb_philo),
+			sizeof(pthread_mutex_t));
 	if ((*mutex_tabs)->fork == NULL)
-		return (EXIT_FAILURE);
-	(*mutex_tabs)->time_last_meal = (pthread_mutex_t *)
-		calloc((info.nb_philo), sizeof(pthread_mutex_t));
-	if ((*mutex_tabs)->time_last_meal == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -43,14 +39,10 @@ static int	ft_init_mutex_tabs(t_info info, t_mutex_tabs *mutex_tabs)
 	while (i < info.nb_philo)
 		if (pthread_mutex_init(mutex_tabs->fork + i++, NULL))
 			return (EXIT_FAILURE);
-	i = 0;
-	while (i < info.nb_philo)
-		if (pthread_mutex_init(mutex_tabs->time_last_meal + i++, NULL))
-			return (EXIT_FAILURE);
 	if (pthread_mutex_init(&mutex_tabs->io, NULL))
-			return (EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	if (pthread_mutex_init(&mutex_tabs->is_a_philo_dead, NULL))
-			return (EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

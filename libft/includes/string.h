@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 16:45:44 by macbook           #+#    #+#             */
-/*   Updated: 2023/11/18 23:46:30 by lethomas         ###   ########.fr       */
+/*   Created: 2023/11/17 16:45:44 by lethomas          #+#    #+#             */
+/*   Updated: 2023/11/27 19:23:42 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define STRING_H
 
 # include "libft.h"
+
+typedef enum e_bool	t_bool;
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);

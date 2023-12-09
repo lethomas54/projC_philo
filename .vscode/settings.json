@@ -1,5 +1,6 @@
 {
 	"files.associations": {
 		"ft_philo_eating": "c"
-	}
+	},
+	"C_Cpp.errorSquiggles": "disabled"
 }

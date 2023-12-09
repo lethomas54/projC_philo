@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_philo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:32:58 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/23 17:40:35 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/12/03 10:19:41 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static int	ft_philo_simu(t_philo_arg *arg)
 {
 	t_bool	is_a_philo_dead;
 	int		nb_eat_left;
-	
+
 	is_a_philo_dead = false;
 	nb_eat_left = arg->info->nb_must_eat;
 	while (nb_eat_left != 0
-			&& is_a_philo_dead == false)
+		&& is_a_philo_dead == false)
 	{
 		if (is_a_philo_dead == false
 			&& ft_philo_thinking(arg, &is_a_philo_dead))
@@ -44,6 +44,7 @@ void	*ft_philo(void *thread_arg_void)
 	t_philo_arg	*thread_arg;
 
 	return_value = EXIT_SUCCESS;
+	(void)return_value;
 	thread_arg = (t_philo_arg *)thread_arg_void;
 	if (ft_philo_simu(thread_arg))
 		return_value = EXIT_FAILURE;

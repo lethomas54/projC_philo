@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   memory.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 16:48:19 by macbook           #+#    #+#             */
-/*   Updated: 2023/11/17 16:48:54 by macbook          ###   ########.fr       */
+/*   Created: 2023/11/17 16:48:19 by lethomas          #+#    #+#             */
+/*   Updated: 2023/12/08 16:31:31 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,6 @@ void	*ft_memmove(void *dst, const void *src, size_t n);
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *f_str, const void *s_str, size_t n);
 void	*ft_calloc(size_t count, size_t size);
-char	**ft_split(char const *s, char c);
+void	ft_free(void **pt);
 
 #endif

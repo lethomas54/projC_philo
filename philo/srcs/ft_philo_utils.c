@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_philo_action.c                                  :+:      :+:    :+:   */
+/*   ft_philo_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/19 03:08:52 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/23 18:17:18 by lethomas         ###   ########.fr       */
+/*   Created: 2023/12/03 10:29:46 by lethomas          #+#    #+#             */
+/*   Updated: 2023/12/04 13:29:33 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,65 +14,66 @@
 
 int	ft_print_locked(char *str, t_philo_arg *arg, t_bool *is_a_philo_dead)
 {
-	time_t			time;
-	time_t			time_stamp;
-	
-	if (is_a_philo_dead != NULL
-		&& *is_a_philo_dead == false)
+	time_t	time;
+
+	if (is_a_philo_dead != NULL)
 	{
-		if (ft_is_a_philo_dead(arg, is_a_philo_dead))
+		if (pthread_mutex_lock(&arg->mutex_tabs->is_a_philo_dead))
 			return (EXIT_FAILURE);
+		*is_a_philo_dead = *arg->is_a_philo_dead;
 	}
-	if (is_a_philo_dead == NULL
-		|| *is_a_philo_dead == false)
+	if (is_a_philo_dead == NULL || *is_a_philo_dead == false)
 	{
 		if (pthread_mutex_lock(&arg->mutex_tabs->io))
 			return (EXIT_FAILURE);
 		if (ft_get_time(&time))
 			return (EXIT_FAILURE);
-		time_stamp = time - arg->info->init_time;
-		if (printf("%d %d %s\n",
-			(int)time_stamp, arg->nb_thread + 1, str) == -1)
+		if (printf("%d %d %s\n", (int)(time - arg->info->init_time),
+			arg->nb_thread + 1, str) == -1)
 			return (EXIT_FAILURE);
 		if (pthread_mutex_unlock(&arg->mutex_tabs->io))
 			return (EXIT_FAILURE);
 	}
+	if (is_a_philo_dead != NULL)
+		if (pthread_mutex_unlock(&arg->mutex_tabs->is_a_philo_dead))
+			return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-int	ft_philo_spleeping(t_philo_arg *arg, t_bool *is_a_philo_dead)
+int	ft_philo_usleep(t_philo_arg *arg, time_t time_to_usleep,
+	t_bool *is_a_philo_dead)
 {
-	if (ft_print_locked("is sleeping", arg, is_a_philo_dead))
-		return (EXIT_FAILURE);
-	if (*is_a_philo_dead == false
-		&& usleep((useconds_t)(1000 * arg->info->time_to_sleep)))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
+	time_t	time_start;
+	time_t	time;
 
-int	ft_philo_thinking(t_philo_arg *arg, t_bool *is_a_philo_dead)
-{
-	if (ft_print_locked("is thinking", arg, is_a_philo_dead))
+	if (ft_get_time(&time_start))
 		return (EXIT_FAILURE);
+	time = time_start;
+	while (time - time_start < time_to_usleep
+		&& *is_a_philo_dead == false)
+	{
+		if (usleep((useconds_t)(100)))
+			return (EXIT_FAILURE);
+		if (ft_is_a_philo_dead(arg, is_a_philo_dead))
+			return (EXIT_FAILURE);
+		if (ft_get_time(&time))
+			return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
 
 static int	ft_is_himself_dead(t_philo_arg *arg, t_bool *is_a_philo_dead)
 {
 	time_t	time;
-	
+
 	if (ft_get_time(&time))
 		return (EXIT_FAILURE);
 	time -= *arg->time_last_meal;
-	if (time > arg->info->time_to_die)
+	if (time >= arg->info->time_to_die)
 		*is_a_philo_dead = true;
 	if (*is_a_philo_dead == true)
 	{
-		if (pthread_mutex_lock(&arg->mutex_tabs->is_a_philo_dead))
-			return (EXIT_FAILURE);
 		*arg->is_a_philo_dead = true;
-		if (pthread_mutex_unlock(&arg->mutex_tabs->is_a_philo_dead))
-			return (EXIT_FAILURE);
 		if (ft_print_locked("has died", arg, NULL))
 			return (EXIT_FAILURE);
 	}
@@ -84,10 +85,10 @@ int	ft_is_a_philo_dead(t_philo_arg *arg, t_bool *is_a_philo_dead)
 	if (pthread_mutex_lock(&arg->mutex_tabs->is_a_philo_dead))
 		return (EXIT_FAILURE);
 	*is_a_philo_dead = *arg->is_a_philo_dead;
-	if (pthread_mutex_unlock(&arg->mutex_tabs->is_a_philo_dead))
-		return (EXIT_FAILURE);
 	if (*is_a_philo_dead == false)
 		if (ft_is_himself_dead(arg, is_a_philo_dead))
 			return (EXIT_FAILURE);
+	if (pthread_mutex_unlock(&arg->mutex_tabs->is_a_philo_dead))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

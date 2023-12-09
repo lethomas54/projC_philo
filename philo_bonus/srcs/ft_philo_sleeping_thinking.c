@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_get_time.c                                      :+:      :+:    :+:   */
+/*   ft_philo_sleeping_thinking.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 02:24:21 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/22 02:24:46 by lethomas         ###   ########.fr       */
+/*   Created: 2023/11/19 03:08:52 by lethomas          #+#    #+#             */
+/*   Updated: 2023/12/08 16:08:19 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-int	ft_get_time(time_t *time_int)
+int	ft_philo_sleeping(t_philo *philo)
 {
-	struct timeval	time_struct;
-
-	if (gettimeofday(&time_struct, NULL))
+	if (ft_print_locked("is sleeping", philo, true))
 		return (EXIT_FAILURE);
-	*time_int = 1000 * time_struct.tv_sec + time_struct.tv_usec / 1000;
+	if (ft_philo_usleep(philo->info->time_to_sleep))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+int	ft_philo_thinking(t_philo *philo)
+{
+	if (ft_print_locked("is thinking", philo, true))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

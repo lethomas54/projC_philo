@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_philo_eating.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 17:41:37 by lethomas          #+#    #+#             */
-/*   Updated: 2023/11/23 17:58:33 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/12/07 12:15:40 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static int	ft_get_a_fork(t_philo_arg *arg, t_bool *have_his_fork,
 	int nb_fork, t_bool *is_a_philo_dead)
 {
-	while(*have_his_fork == false && *is_a_philo_dead == false)
+	while (*have_his_fork == false && *is_a_philo_dead == false)
 	{
 		if (pthread_mutex_lock(arg->mutex_tabs->fork + nb_fork))
 			return (EXIT_FAILURE);
@@ -34,57 +34,63 @@ static int	ft_get_a_fork(t_philo_arg *arg, t_bool *have_his_fork,
 	return (EXIT_SUCCESS);
 }
 
-static int ft_philo_get_forks(t_philo_arg *arg, t_bool *is_a_philo_dead)
+static int	ft_philo_get_forks(t_philo_arg *arg, t_bool *is_a_philo_dead)
 {
 	t_bool	have_his_first_fork;
 	t_bool	have_his_second_fork;
-	
+
 	have_his_first_fork = false;
 	have_his_second_fork = false;
-	if (ft_get_a_fork(arg, &have_his_first_fork, 
-		ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1,
-		arg->nb_thread, 0), is_a_philo_dead))
+	if (ft_get_a_fork(arg, &have_his_first_fork,
+			(arg->nb_thread + (arg->nb_thread % 2 == 0)) % arg->info->nb_philo,
+			is_a_philo_dead))
 		return (EXIT_FAILURE);
 	if (*is_a_philo_dead == true)
 		return (EXIT_SUCCESS);
-	if (ft_get_a_fork(arg, &have_his_second_fork, 
-		ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1,
-		arg->nb_thread + 1, arg->nb_thread), is_a_philo_dead))
+	if (ft_get_a_fork(arg, &have_his_second_fork,
+			(arg->nb_thread + (arg->nb_thread % 2 != 0)) % arg->info->nb_philo,
+			is_a_philo_dead))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+//ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1,
+//	arg->nb_thread, 0), is_a_philo_dead)
+//ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1, arg->nb_thread + 1,
+//	arg->nb_thread), is_a_philo_dead)
 
-static int ft_philo_let_forks(t_philo_arg *arg)
+static int	ft_philo_let_forks(t_philo_arg *arg)
 {
 	if (pthread_mutex_lock(arg->mutex_tabs->fork
-		+ ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1,
-		arg->nb_thread, 0)))
+			+ (arg->nb_thread + (arg->nb_thread % 2 == 0))
+			% arg->info->nb_philo))
 		return (EXIT_FAILURE);
-	arg->fork_available[ft_ternary_op(arg->nb_thread
-		!= arg->info->nb_philo - 1, arg->nb_thread, 0)] = true;
+	arg->fork_available[(arg->nb_thread + (arg->nb_thread % 2 == 0))
+		% arg->info->nb_philo] = true;
 	if (pthread_mutex_unlock(arg->mutex_tabs->fork
-		+ ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1,
-		arg->nb_thread, 0)))
+			+ (arg->nb_thread + (arg->nb_thread % 2 == 0))
+			% arg->info->nb_philo))
 		return (EXIT_FAILURE);
-	if (pthread_mutex_lock(arg->mutex_tabs->fork + ft_ternary_op(arg->nb_thread 
-		!= arg->info->nb_philo - 1, arg->nb_thread + 1, arg->nb_thread)))
-		return ( EXIT_FAILURE);
-	arg->fork_available[ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1,
-		arg->nb_thread + 1, arg->nb_thread)] = true;
-	if (pthread_mutex_unlock(arg->mutex_tabs->fork + ft_ternary_op(arg->nb_thread
-		!= arg->info->nb_philo - 1, arg->nb_thread + 1, arg->nb_thread)))
+	if (pthread_mutex_lock(arg->mutex_tabs->fork + (arg->nb_thread
+				+ (arg->nb_thread % 2 != 0)) % arg->info->nb_philo))
+		return (EXIT_FAILURE);
+	arg->fork_available[(arg->nb_thread + (arg->nb_thread % 2 != 0))
+		% arg->info->nb_philo] = true;
+	if (pthread_mutex_unlock(arg->mutex_tabs->fork + (arg->nb_thread
+				+ (arg->nb_thread % 2 != 0)) % arg->info->nb_philo))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
+//ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1,
+//	arg->nb_thread, 0), is_a_philo_dead)
+//ft_ternary_op(arg->nb_thread != arg->info->nb_philo - 1, arg->nb_thread + 1,
+//	arg->nb_thread), is_a_philo_dead)
 
-static int	ft_update_last_meal_time(int nb_thread,
-	t_mutex_tabs *mutex_tabs, time_t *time_since_last_meal)
+static int	ft_update_last_meal_time(time_t *time_since_last_meal,
+	t_bool *is_a_philo_dead)
 {
-	if (pthread_mutex_lock(mutex_tabs->time_last_meal + nb_thread))
-		return (EXIT_FAILURE);
+	if (*is_a_philo_dead == true)
+		return (EXIT_SUCCESS);
 	if (ft_get_time(time_since_last_meal))
-		return (EXIT_FAILURE);
-	if (pthread_mutex_unlock(mutex_tabs->time_last_meal + nb_thread))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -93,17 +99,14 @@ int	ft_philo_eating(t_philo_arg *arg, int *nb_eat_left, t_bool *is_a_philo_dead)
 {
 	if (ft_philo_get_forks(arg, is_a_philo_dead))
 		return (EXIT_FAILURE);
+	if (ft_update_last_meal_time(arg->time_last_meal, is_a_philo_dead))
+		return (EXIT_FAILURE);
 	if (ft_print_locked("is eating", arg, is_a_philo_dead))
 		return (EXIT_FAILURE);
-	if (*is_a_philo_dead == false
-		&& usleep((useconds_t)(1000 * arg->info->time_to_eat)))
+	if (ft_philo_usleep(arg, arg->info->time_to_eat, is_a_philo_dead))
 		return (EXIT_FAILURE);
 	if (ft_philo_let_forks(arg))
 		return (EXIT_FAILURE);
-	if (ft_update_last_meal_time(arg->nb_thread, arg->mutex_tabs,
-		arg->time_last_meal))
-		return (EXIT_FAILURE);
-	if (*nb_eat_left != NO_LIMIT)
-		(*nb_eat_left)--;
+	*nb_eat_left -= (*nb_eat_left != NO_LIMIT);
 	return (EXIT_SUCCESS);
 }

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   io.h                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbook <macbook@student.42.fr>            +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/17 16:41:43 by macbook           #+#    #+#             */
-/*   Updated: 2023/11/17 16:50:40 by macbook          ###   ########.fr       */
+/*   Created: 2023/11/17 16:41:43 by lethomas          #+#    #+#             */
+/*   Updated: 2023/11/27 19:23:08 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef io_H
-# define io_H
+#ifndef IO_H
+# define IO_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
