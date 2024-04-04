@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:26:29 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/07 12:04:52 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:08:19 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,4 +101,3 @@ int	ft_create_philo(t_info *info, pthread_t **thread_tab,
 	free(fork_available);
 	return (EXIT_SUCCESS);
 }
-//verfier le cas de sortie avec erreur

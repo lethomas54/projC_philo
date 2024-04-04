@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:32:58 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/03 10:19:41 by lethomas         ###   ########.fr       */
+/*   Updated: 2023/12/09 01:04:14 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static int	ft_philo_simu(t_philo_arg *arg)
 			&& ft_philo_eating(arg, &nb_eat_left, &is_a_philo_dead))
 			return (EXIT_FAILURE);
 		if (is_a_philo_dead == false
-			&& ft_philo_spleeping(arg, &is_a_philo_dead))
+			&& ft_philo_sleeping(arg, &is_a_philo_dead))
 			return (EXIT_FAILURE);
 		if (is_a_philo_dead == false
 			&& ft_is_a_philo_dead(arg, &is_a_philo_dead))
