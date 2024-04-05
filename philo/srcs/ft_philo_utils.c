@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_philo_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:29:46 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/04 13:29:33 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/05 12:26:52 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_print_locked(char *str, t_philo_arg *arg, t_bool *is_a_philo_dead)
 			return (EXIT_FAILURE);
 		if (ft_get_time(&time))
 			return (EXIT_FAILURE);
-		if (printf("%d %d %s\n", (int)(time - arg->info->init_time),
+		if (printf("%d %d %s\n", (int)(time - arg->info.init_time),
 			arg->nb_thread + 1, str) == -1)
 			return (EXIT_FAILURE);
 		if (pthread_mutex_unlock(&arg->mutex_tabs->io))
@@ -69,7 +69,7 @@ static int	ft_is_himself_dead(t_philo_arg *arg, t_bool *is_a_philo_dead)
 	if (ft_get_time(&time))
 		return (EXIT_FAILURE);
 	time -= *arg->time_last_meal;
-	if (time >= arg->info->time_to_die)
+	if (time >= arg->info.time_to_die)
 		*is_a_philo_dead = true;
 	if (*is_a_philo_dead == true)
 	{

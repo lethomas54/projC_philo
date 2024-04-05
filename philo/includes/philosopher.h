@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:03:20 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/07 13:44:43 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/05 12:19:15 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,18 @@ typedef struct s_mutex_tabs
 typedef struct s_philo_arg
 {
 	int				nb_thread;
-	t_info			*info;
+	t_info			info;
 	t_bool			*fork_available;
 	t_mutex_tabs	*mutex_tabs;
 	time_t			*time_last_meal;
 	t_bool			*is_a_philo_dead;
 }	t_philo_arg;
 
-int		ft_init_philo(t_info *info, pthread_t **thread_tab,
-			t_mutex_tabs **mutex_tabs);
-int		ft_create_philo(t_info *info, pthread_t **thread_tab,
+int		ft_init_philo(t_info info, pthread_t **thread_tab,
 			t_mutex_tabs *mutex_tabs);
-int		ft_end_philo(t_info *info, t_mutex_tabs **mutex_tabs);
+int		ft_create_philo(t_info info, pthread_t *thread_tab,
+			t_mutex_tabs *mutex_tabs);
+int		ft_end_philo(t_info info, t_mutex_tabs *mutex_tabs);
 
 void	*ft_philo(void *arg);
 int		ft_philo_thinking(t_philo_arg *arg, t_bool *is_a_philo_dead);

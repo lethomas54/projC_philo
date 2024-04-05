@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:02:39 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/07 11:46:25 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:54:28 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,16 @@ static int	ft_set_info(int argc, char **argv, t_info *info)
 	return (EXIT_SUCCESS);
 }
 
-static int	ft_philo_program(t_info *info, pthread_t **thread_tab,
-	t_mutex_tabs **mutex_tabs)
+static int	ft_philo_program(t_info info)
 {
-	if (ft_init_philo(info, thread_tab, mutex_tabs))
+	pthread_t		*thread_tab;
+	t_mutex_tabs	mutex_tabs;
+
+	if (ft_init_philo(info, &thread_tab, &mutex_tabs))
 		return (EXIT_FAILURE);
-	if (ft_create_philo(info, thread_tab, *mutex_tabs))
+	if (ft_create_philo(info, thread_tab, &mutex_tabs))
 		return (EXIT_FAILURE);
-	if (ft_end_philo(info, mutex_tabs))
+	if (ft_end_philo(info, &mutex_tabs))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -55,12 +57,10 @@ static int	ft_philo_program(t_info *info, pthread_t **thread_tab,
 int	main(int argc, char **argv)
 {
 	t_info			info;
-	pthread_t		*thread_tab;
-	t_mutex_tabs	*mutex_tabs;
 
 	if (ft_set_info(argc, argv, &info))
 		return (EXIT_FAILURE);
-	if (ft_philo_program(&info, &thread_tab, &mutex_tabs))
+	if (ft_philo_program(info))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

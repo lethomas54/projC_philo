@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_philo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:32:58 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/09 01:04:14 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/05 12:24:09 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,8 @@ static int	ft_philo_simu(t_philo_arg *arg)
 	int		nb_eat_left;
 
 	is_a_philo_dead = false;
-	nb_eat_left = arg->info->nb_must_eat;
-	while (nb_eat_left != 0
-		&& is_a_philo_dead == false)
+	nb_eat_left = arg->info.nb_must_eat;
+	while (nb_eat_left != 0 && is_a_philo_dead == false)
 	{
 		if (is_a_philo_dead == false
 			&& ft_philo_thinking(arg, &is_a_philo_dead))
@@ -40,14 +39,10 @@ static int	ft_philo_simu(t_philo_arg *arg)
 
 void	*ft_philo(void *thread_arg_void)
 {
-	int			return_value;
 	t_philo_arg	*thread_arg;
 
-	return_value = EXIT_SUCCESS;
-	(void)return_value;
 	thread_arg = (t_philo_arg *)thread_arg_void;
-	if (ft_philo_simu(thread_arg))
-		return_value = EXIT_FAILURE;
+	ft_philo_simu(thread_arg);
 	free(thread_arg->time_last_meal);
 	free(thread_arg);
 	return (NULL);
