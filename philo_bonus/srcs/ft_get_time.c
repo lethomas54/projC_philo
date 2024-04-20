@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 02:24:21 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/03 09:38:04 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/12 18:46:39 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,6 @@ int	ft_get_time(time_t *time_int)
 
 	if (gettimeofday(&time_struct, NULL))
 		return (EXIT_FAILURE);
-	*time_int = 1000 * time_struct.tv_sec + time_struct.tv_usec / 1000;
+	*time_int = 1000 * time_struct.tv_sec + time_struct.tv_usec * 0.001;
 	return (EXIT_SUCCESS);
 }

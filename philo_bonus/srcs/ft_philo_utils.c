@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:29:46 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/08 22:46:00 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/12 18:42:45 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_philo_usleep(time_t time_to_sleep)
 	time = time_start;
 	while (time - time_start < time_to_sleep)
 	{
-		if (usleep((useconds_t)(1000)))
+		if (usleep(1000))
 			return (EXIT_FAILURE);
 		if (ft_get_time(&time))
 			return (EXIT_FAILURE);

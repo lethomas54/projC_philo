@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_end_philo.c                                     :+:      :+:    :+:   */
+/*   ft_free_destroy.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:41:19 by lethomas          #+#    #+#             */
-/*   Updated: 2024/04/05 12:28:01 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/05 21:30:40 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-int	ft_end_philo(t_info info, t_mutex_tabs *mutex_tabs)
+int	ft_free_destroy(int philo_count, t_philo *philo, t_mutex *mutex)
 {
 	int	return_value;
 	int	i;
 
 	return_value = EXIT_SUCCESS;
 	i = 0;
-	while (i < info.nb_philo)
+	while (i < philo_count)
 	{
-		if (pthread_mutex_destroy(mutex_tabs->fork + i))
-			return_value = EXIT_FAILURE;
-		i++;
+		if (mutex->fork != NULL)
+			if (pthread_mutex_destroy(mutex->fork + i))
+				return_value = EXIT_FAILURE;
+		if (mutex->meal_upd != NULL)
+			if (pthread_mutex_destroy(mutex->meal_upd + i++))
+				return_value = EXIT_FAILURE;
 	}
-	if (pthread_mutex_destroy(&mutex_tabs->io))
+	if (pthread_mutex_destroy(&mutex->io))
 		return_value = EXIT_FAILURE;
-	if (pthread_mutex_destroy(&mutex_tabs->is_a_philo_dead))
-		return_value = EXIT_FAILURE;
-	free(mutex_tabs->fork);
+	free(mutex->fork);
+	free(mutex->meal_upd);
+	free(philo);
 	return (return_value);
 }

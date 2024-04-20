@@ -3,15 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:03:20 by lethomas          #+#    #+#             */
-/*   Updated: 2024/04/05 12:19:15 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/04/12 18:17:07 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILOSOPHER_H
 # define PHILOSOPHER_H
+
+/*-------------------INCLUDE-------------------*/
 
 # include "../../libft/includes/libft.h"
 # include <pthread.h>
@@ -19,52 +21,68 @@
 # include <sys/time.h>
 # include <stdio.h>
 
+/*--------------------MACRO--------------------*/
+
 # define NO_LIMIT -1
+
+/*-------------------STRUCT--------------------*/
 
 typedef struct s_info
 {
-	int				nb_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				nb_must_eat;
-	time_t			init_time;
+	int				philo_count;
+	int				starv_time;
+	int				eat_time;
+	int				sleep_time;
+	int				meal_left;
 }	t_info;
 
-typedef struct s_mutex_tabs
+typedef struct s_mutex
 {
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	io;
-	pthread_mutex_t	is_a_philo_dead;
-}	t_mutex_tabs;
+	pthread_mutex_t	*meal_upd;
+}	t_mutex;
 
-typedef struct s_philo_arg
+typedef struct s_shared
 {
-	int				nb_thread;
-	t_info			info;
-	t_bool			*fork_available;
-	t_mutex_tabs	*mutex_tabs;
-	time_t			*time_last_meal;
-	t_bool			*is_a_philo_dead;
-}	t_philo_arg;
+	time_t			start_time;
+	t_bool			can_start;
+	t_bool			must_stop;
+}	t_shared;
 
-int		ft_init_philo(t_info info, pthread_t **thread_tab,
-			t_mutex_tabs *mutex_tabs);
-int		ft_create_philo(t_info info, pthread_t *thread_tab,
-			t_mutex_tabs *mutex_tabs);
-int		ft_end_philo(t_info info, t_mutex_tabs *mutex_tabs);
+typedef struct s_philo
+{
+	int				nb;
+	int				philo_count;
+	int				sleep_time;
+	int				starv_time;
+	int				eat_time;
+	int				meal_left;
+	int				last_meal;
+	time_t			start_time;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	pthread_mutex_t	*io;
+	pthread_mutex_t	*meal_upd;
+	t_shared		*shared;
+}	t_philo;
 
-void	*ft_philo(void *arg);
-int		ft_philo_thinking(t_philo_arg *arg, t_bool *is_a_philo_dead);
-int		ft_philo_eating(t_philo_arg *arg, int *nb_eat_left,
-			t_bool *is_a_philo_dead);
-int		ft_philo_sleeping(t_philo_arg *arg, t_bool *is_a_philo_dead);
+/*----------------PROGRAM_STEP-----------------*/
 
-int		ft_philo_usleep(t_philo_arg *arg, time_t time_to_usleep,
-			t_bool *is_a_philo_dead);
-int		ft_is_a_philo_dead(t_philo_arg *arg, t_bool *is_a_philo_dead);
-int		ft_print_locked(char *str, t_philo_arg *arg, t_bool *is_a_philo_dead);
+int		ft_init_philo(t_info info, t_shared *sh, t_philo **philo,
+			t_mutex *mutex);
+int		ft_create_thread(int philo_count, t_shared *shared, t_philo *philo);
+int		ft_free_destroy(int philo_count, t_philo *philo, t_mutex *mutex);
 
+/*---------------THREAD_ROUTINE----------------*/
+
+void	*ft_philo_routine(void *philo);
+void	*ft_reaper_routine(void *philo_void);
+
+/*----------------THREAD_UTILS-----------------*/
+
+int		ft_philo_usleep(time_t wait_time, t_bool *must_stop);
+int		ft_print_locked(char *str, t_philo *philo, t_bool is_reaper);
 int		ft_get_time(time_t *time_int);
 
 #endif

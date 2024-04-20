@@ -37,18 +37,15 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	@ar -rsc $(NAME) $(OBJ)
-	@echo "\033[0;34mlibft compilation: \033[0;32mOK\033[0;0m"
 
 %.o: %.c
 	@$(COMP) $(CFLAGS) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ)
-	@echo "\033[0;31mlibft clean: \033[0;32mOK\033[0;0m"
 
 fclean:
 	@rm -f $(OBJ) $(NAME)
-	@echo "\033[0;31mlibft fclean: \033[0;32mOK\033[0;0m"
 
 re: fclean all
 
