@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_philo.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:32:58 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/09 00:54:44 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/15 17:13:43 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,13 @@
 
 static int	ft_philo_simulation(t_philo *philo)
 {
-	int	nb_meal_left;
-
-	if (ft_get_nb_must_eat(philo, &nb_meal_left))
-		return (EXIT_FAILURE);
-	while (nb_meal_left != 0)
+	while (philo->nb_meal_left != 0)
 	{
-		if (ft_philo_thinking(philo))
-			return (EXIT_FAILURE);
 		if (ft_philo_eating(philo))
 			return (EXIT_FAILURE);
 		if (ft_philo_sleeping(philo))
 			return (EXIT_FAILURE);
-		if (ft_get_nb_must_eat(philo, &nb_meal_left))
+		if (ft_philo_thinking(philo))
 			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

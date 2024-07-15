@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_death.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 22:52:21 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/08 20:58:59 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:59:17 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ static int	ft_look_for_death(t_philo *philo, t_bool *is_philo_dead,
 void	*ft_death(void *philo)
 {
 	t_bool	is_philo_dead;
-	int		nb_must_eat;
 	int		*return_value;
 
 	return_value = (int *)ft_calloc(1, sizeof(int));
@@ -61,12 +60,10 @@ void	*ft_death(void *philo)
 		return (NULL);
 	*return_value = EXIT_SUCCESS;
 	is_philo_dead = false;
-	if (ft_get_nb_must_eat((t_philo *)philo, &nb_must_eat))
-		return (*return_value = EXIT_FAILURE, (void *)return_value);
-	while (nb_must_eat != 0)
+	while (((t_philo *)philo)->nb_meal_left != 0)
 	{
 		*return_value = ft_look_for_death((t_philo *)philo, &is_philo_dead,
-				&nb_must_eat);
+				&((t_philo *)philo)->nb_meal_left);
 		if (*return_value != EXIT_SUCCESS)
 			exit(*return_value);
 	}

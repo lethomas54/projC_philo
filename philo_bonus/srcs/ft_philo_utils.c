@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_philo_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 10:29:46 by lethomas          #+#    #+#             */
-/*   Updated: 2024/04/12 18:42:45 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/15 17:35:18 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,10 @@ int	ft_philo_usleep(time_t time_to_sleep)
 	time = time_start;
 	while (time - time_start < time_to_sleep)
 	{
-		if (usleep(1000))
+		if (usleep(500))
 			return (EXIT_FAILURE);
 		if (ft_get_time(&time))
 			return (EXIT_FAILURE);
 	}
-	return (EXIT_SUCCESS);
-}
-
-int	ft_get_nb_must_eat(t_philo *philo, int *nb_must_eat)
-{
-	if (pthread_mutex_lock(&philo->mutex_death))
-		return (EXIT_FAILURE);
-	*nb_must_eat = philo->nb_meal_left;
-	if (pthread_mutex_unlock(&philo->mutex_death))
-		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

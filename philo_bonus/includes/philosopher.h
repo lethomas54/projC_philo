@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:03:20 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/09 00:46:04 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:57:57 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ typedef struct s_info
 
 typedef struct s_sem_tab
 {
-	sem_t	*fork_first;
-	sem_t	*fork_scnd;
+	sem_t	*fork;
 	sem_t	*io;
 }	t_sem_tab;
 
@@ -69,7 +68,6 @@ int		ft_philo_sleeping(t_philo *philo);
 
 int		ft_philo_usleep(time_t time_to_usleep);
 int		ft_print_locked(char *str, t_philo *philo, t_bool do_sem_post);
-int		ft_get_nb_must_eat(t_philo *philo, int *nb_must_eat);
 
 void	*ft_death(void *info);
 

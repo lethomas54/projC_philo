@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_philo_eating.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 17:41:37 by lethomas          #+#    #+#             */
-/*   Updated: 2023/12/08 22:45:02 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/15 17:09:11 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,14 @@
 
 static int	ft_philo_get_forks(t_philo *philo)
 {
-	if (sem_wait(philo->sem_tab->fork_first))
-		return (EXIT_FAILURE);
-	if (ft_print_locked("has taken a fork", philo, true))
-		return (EXIT_FAILURE);
-	if (sem_wait(philo->sem_tab->fork_scnd))
-		return (EXIT_FAILURE);
-	if (ft_print_locked("has taken a fork", philo, true))
+	if (sem_wait(philo->sem_tab->fork))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
 static int	ft_philo_let_forks(t_philo *philo)
 {
-	if (sem_post(philo->sem_tab->fork_first))
-		return (EXIT_FAILURE);
-	if (sem_post(philo->sem_tab->fork_scnd))
+	if (sem_post(philo->sem_tab->fork))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
