@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_create_thread.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:26:29 by lethomas          #+#    #+#             */
-/*   Updated: 2024/04/12 18:28:32 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/15 14:55:59 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ static int	ft_thread_join(int philo_count, pthread_t *thread,
 		if (i == philo_count)
 			*must_stop = true;
 	}
-	free(thread);
 	return (return_value);
 }
 
@@ -54,14 +53,14 @@ int	ft_create_thread(int philo_count, t_shared *shared, t_philo *philo)
 	if (return_value == EXIT_SUCCESS)
 		return_value = pthread_create(thread + i, NULL,
 				&ft_reaper_routine, philo) != 0;
-	if (return_value == EXIT_SUCCESS
-		&& ft_get_time(&shared->start_time))
-		return_value = EXIT_FAILURE;
+	if (return_value == EXIT_SUCCESS)
+		return_value = ft_get_time(&shared->start_time);
 	if (return_value == EXIT_FAILURE)
 		shared->must_stop = true;
 	else
 		shared->can_start = true;
 	if (ft_thread_join(philo_count, thread, &shared->must_stop))
 		return_value = EXIT_FAILURE;
+	free(thread);
 	return (return_value);
 }

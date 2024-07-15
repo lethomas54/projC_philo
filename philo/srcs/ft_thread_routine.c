@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_thread_routine.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:32:58 by lethomas          #+#    #+#             */
-/*   Updated: 2024/04/12 14:43:04 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:06:00 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	*ft_philo_routine(void *philo_void)
 	while (philo->meal_left != 0
 		&& philo->shared->must_stop == false)
 	{
+		if (philo->philo_count == 1)
+			continue ;
 		if (ft_eating(philo)
 			&& philo->shared->must_stop == false)
 			return ((void *)EXIT_FAILURE);
