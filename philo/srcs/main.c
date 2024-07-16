@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:02:39 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/15 13:49:58 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:09:46 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ static int	ft_set_info(int argc, char **argv, t_info *info)
 	info->starv_time = ft_atoi(argv[2], 0);
 	info->eat_time = ft_atoi(argv[3], 0);
 	info->sleep_time = ft_atoi(argv[4], 0);
-	info->meal_left = 0;
+	info->meal_left = 1;
 	if (argc == 6)
 		info->meal_left = ft_atoi(argv[5], 0);
-	if (info->philo_count < 0
-		|| info->starv_time < 0
-		|| info->sleep_time < 0
-		|| info->meal_left < 0)
+	if (info->philo_count <= 0
+		|| info->starv_time <= 0
+		|| info->sleep_time <= 0
+		|| info->meal_left <= 0)
 		return (EXIT_FAILURE);
 	if (info->philo_count == INT_MAX
 		|| info->starv_time == INT_MAX
