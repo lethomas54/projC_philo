@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:32:58 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/15 16:52:44 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:21:55 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@ static int	ft_eating(t_philo *philo)
 {
 	time_t	time;
 
-	if (pthread_mutex_lock(philo->left_fork))
+	if (pthread_mutex_lock(philo->left_fork)
+		|| ft_print_locked("has taken a fork", philo, false))
 		return (EXIT_FAILURE);
-	if (pthread_mutex_lock(philo->right_fork))
+	if (pthread_mutex_lock(philo->right_fork)
+		|| ft_print_locked("has taken a fork", philo, false))
 		return (EXIT_FAILURE);
 	if (pthread_mutex_lock(philo->meal_upd))
 		return (EXIT_FAILURE);
@@ -32,9 +34,8 @@ static int	ft_eating(t_philo *philo)
 	if (ft_philo_usleep(philo->eat_time,
 			&philo->shared->must_stop))
 		return (EXIT_FAILURE);
-	if (pthread_mutex_unlock(philo->left_fork))
-		return (EXIT_FAILURE);
-	if (pthread_mutex_unlock(philo->right_fork))
+	if (pthread_mutex_unlock(philo->left_fork)
+		|| pthread_mutex_unlock(philo->right_fork))
 		return (EXIT_FAILURE);
 	philo->meal_left -= (philo->meal_left != NO_LIMIT);
 	return (EXIT_SUCCESS);

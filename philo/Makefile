@@ -102,7 +102,7 @@ all: $(NAME)
 bonus: $(NAME_bonus)
 
 $(NAME): $(OBJ)
-	@$(COMP) $(CFLAGS) $(OBJ) -o $@
+	@$(COMP) $(CFLAGS) $(OBJ) -o $@ -lpthread
 
 %.o: %.c $(INCS)
 	@$(COMP) $(CFLAGS) -c $< -o $@

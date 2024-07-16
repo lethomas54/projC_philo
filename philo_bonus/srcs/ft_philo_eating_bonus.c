@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 17:41:37 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/16 13:54:43 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/16 15:26:59 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 static int	ft_philo_get_forks(t_philo *philo)
 {
 	if (sem_wait(philo->sem_tab->fork))
+		return (EXIT_FAILURE);
+	if (ft_print_locked("has taken a fork", philo, true))
+		return (EXIT_FAILURE);
+	if (ft_print_locked("has taken a fork", philo, true))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
