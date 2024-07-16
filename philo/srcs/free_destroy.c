@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_free_destroy.c                                  :+:      :+:    :+:   */
+/*   free_destroy.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:41:19 by lethomas          #+#    #+#             */
-/*   Updated: 2024/04/05 21:30:40 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/16 19:12:09 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-int	ft_free_destroy(int philo_count, t_philo *philo, t_mutex *mutex)
+int	free_destroy(int count, t_philo *philo, t_mutex *mutex)
 {
-	int	return_value;
 	int	i;
 
-	return_value = EXIT_SUCCESS;
 	i = 0;
-	while (i < philo_count)
+	while (i < count)
 	{
-		if (mutex->fork != NULL)
-			if (pthread_mutex_destroy(mutex->fork + i))
-				return_value = EXIT_FAILURE;
-		if (mutex->meal_upd != NULL)
-			if (pthread_mutex_destroy(mutex->meal_upd + i++))
-				return_value = EXIT_FAILURE;
+		if (pthread_mutex_destroy(mutex->fork + i))
+			return (EXIT_FAILURE);
+		if (pthread_mutex_destroy(mutex->meal_time + i))
+			return (EXIT_FAILURE);
+		if (pthread_mutex_destroy(mutex->meal_count + i++))
+			return (EXIT_FAILURE);
 	}
 	if (pthread_mutex_destroy(&mutex->io))
-		return_value = EXIT_FAILURE;
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&mutex->stop))
+		return (EXIT_FAILURE);
+	if (pthread_mutex_destroy(&mutex->start))
+		return (EXIT_FAILURE);
 	free(mutex->fork);
-	free(mutex->meal_upd);
+	free(mutex->meal_time);
+	free(mutex->meal_count);
 	free(philo);
-	return (return_value);
+	return (EXIT_SUCCESS);
 }

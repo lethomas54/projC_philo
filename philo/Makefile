@@ -15,11 +15,12 @@ CFLAGS		:=	-Wall -Wextra -Werror
 #------------------------------SOURCE+OBJECT_FILE--------------------------------------#
 ########################################################################################
 
-SRC			:=	main.c ft_init_philo.c ft_create_thread.c \
-				ft_free_destroy.c ft_thread_routine.c \
-				ft_philo_utils.c \
-				ft_atoi.c ft_bzero.c ft_calloc.c ft_putendl_fd.c ft_putstr_fd.c \
-				ft_putnbr_fd.c ft_memset.c ft_putchar_fd.c 
+SRC			:=	main.c init_philo.c create_thread.c \
+				free_destroy.c thread_routine.c \
+				philo_utils.c \
+				ft_atoi.c ft_bzero.c ft_calloc.c \
+				ft_putendl_fd.c ft_putstr_fd.c \
+				ft_putnbr_fd.c ft_memset.c ft_putchar_fd.c
 
 SRCS		:= $(addprefix ./srcs/, $(SRC))
 OBJ 		:= $(SRCS:.c=.o)

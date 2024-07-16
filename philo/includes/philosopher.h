@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:03:20 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/16 12:27:11 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/16 19:22:45 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef enum e_bool
 
 typedef struct s_info
 {
-	int				philo_count;
+	int				count;
 	int				starv_time;
 	int				eat_time;
 	int				sleep_time;
@@ -47,50 +47,60 @@ typedef struct s_mutex
 {
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	io;
-	pthread_mutex_t	*meal_upd;
+	pthread_mutex_t	start;
+	pthread_mutex_t	*meal_time;
+	pthread_mutex_t	*meal_count;
+	pthread_mutex_t	stop;
 }	t_mutex;
 
-typedef struct s_shared
+typedef struct s_sh
 {
 	time_t			start_time;
 	t_bool			can_start;
 	t_bool			must_stop;
-}	t_shared;
+}	t_sh;
 
 typedef struct s_philo
 {
 	int				nb;
-	int				philo_count;
+	int				count;
 	int				sleep_time;
 	int				starv_time;
 	int				eat_time;
 	int				meal_left;
-	int				last_meal;
-	time_t			start_time;
+	time_t			last_meal;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*io;
-	pthread_mutex_t	*meal_upd;
-	t_shared		*shared;
+	pthread_mutex_t	*start;
+	pthread_mutex_t	*stop;
+	pthread_mutex_t	*meal_time;
+	pthread_mutex_t	*meal_count;
+	t_sh			*sh;
 }	t_philo;
 
 /*----------------PROGRAM_STEP-----------------*/
 
-int		ft_init_philo(t_info info, t_shared *sh, t_philo **philo,
+int		init_philo(t_info info, t_sh *sh, t_philo **philo,
 			t_mutex *mutex);
-int		ft_create_thread(int philo_count, t_shared *shared, t_philo *philo);
-int		ft_free_destroy(int philo_count, t_philo *philo, t_mutex *mutex);
+int		create_thread(int count, t_sh *sh, t_philo *philo);
+int		free_destroy(int count, t_philo *philo, t_mutex *mutex);
 
 /*---------------THREAD_ROUTINE----------------*/
 
-void	*ft_philo_routine(void *philo);
-void	*ft_reaper_routine(void *philo_void);
+void	*philo_routine(void *philo);
+void	*reaper_routine(void *philo_void);
 
 /*----------------THREAD_UTILS-----------------*/
 
-int		ft_philo_usleep(time_t wait_time, t_bool *must_stop);
-int		ft_print_locked(char *str, t_philo *philo, t_bool is_reaper);
-int		ft_get_time(time_t *time_int);
+int		philo_usleep(time_t wait_time, t_bool *must_stop,
+			pthread_mutex_t *mutex);
+int		print_locked(char *str, t_philo *philo, t_bool is_reaper);
+int		get_time(time_t *time_int);
+
+int		set_must_stop(t_bool new_val, t_bool *must_stop,
+			pthread_mutex_t *stop_mutex);
+int		get_bool_var(t_bool *to_get, t_bool *getted, pthread_mutex_t *mutex);
 
 /*----------------FT_UTILS-----------------*/
 
