@@ -17,7 +17,9 @@ CFLAGS		:=	-Wall -Wextra -Werror
 
 SRC			:=	main.c ft_init_philo.c ft_create_thread.c \
 				ft_free_destroy.c ft_thread_routine.c \
-				ft_philo_utils.c
+				ft_philo_utils.c \
+				ft_atoi.c ft_bzero.c ft_calloc.c ft_putendl_fd.c ft_putstr_fd.c \
+				ft_putnbr_fd.c ft_memset.c ft_putchar_fd.c 
 
 SRCS		:= $(addprefix ./srcs/, $(SRC))
 OBJ 		:= $(SRCS:.c=.o)
@@ -28,13 +30,6 @@ OBJ 		:= $(SRCS:.c=.o)
 
 INC			:= philosopher.h
 INCS		:= $(addprefix ./includes/, $(INC))
-
-########################################################################################
-#-----------------------------------LIB_VAR--------------------------------------------#
-########################################################################################
-
-LIBPATH 	:= ../libft/
-LIBNAME 	:= $(LIBPATH)libft.a
 
 ########################################################################################
 #-----------------------------------COLOR_VAR------------------------------------------#
@@ -106,24 +101,19 @@ all: $(NAME)
 
 bonus: $(NAME_bonus)
 
-$(NAME): $(LIBNAME) $(OBJ)
-	@$(COMP) $(CFLAGS) $(OBJ) -o $@ -L $(LIBPATH) -lft
-
-$(LIBNAME):
-	@make -C $(LIBPATH) all
+$(NAME): $(OBJ)
+	@$(COMP) $(CFLAGS) $(OBJ) -o $@
 
 %.o: %.c $(INCS)
 	@$(COMP) $(CFLAGS) -c $< -o $@
 	@$(call progress_bar)
 
 clean:
-	@make -C $(LIBPATH) clean
 	@rm -f $(OBJ)
 	@echo "$(RED_BOLD)$(NAME) clean: $(GREEN)OK$(WHITE)"
 	@$(eval CURRENT_FILE := 0)
 
 fclean:
-	@make -C $(LIBPATH) fclean
 	@rm -f $(OBJ) $(NAME)
 	@echo "$(RED_BOLD)$(NAME) fclean: $(GREEN)OK$(WHITE)"
 	@$(eval CURRENT_FILE := 0)

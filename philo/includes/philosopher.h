@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosopher.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lethomas <lethomas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:03:20 by lethomas          #+#    #+#             */
-/*   Updated: 2024/04/12 18:17:07 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/16 12:27:11 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,24 @@
 
 /*-------------------INCLUDE-------------------*/
 
-# include "../../libft/includes/libft.h"
 # include <pthread.h>
 # include <stdlib.h>
 # include <sys/time.h>
 # include <stdio.h>
+# include <limits.h>
+# include <unistd.h>
 
 /*--------------------MACRO--------------------*/
 
 # define NO_LIMIT -1
 
-/*-------------------STRUCT--------------------*/
+/*-----------------STRUCT-ENUM-----------------*/
+
+typedef enum e_bool
+{
+	false,
+	true
+}	t_bool;
 
 typedef struct s_info
 {
@@ -84,5 +91,16 @@ void	*ft_reaper_routine(void *philo_void);
 int		ft_philo_usleep(time_t wait_time, t_bool *must_stop);
 int		ft_print_locked(char *str, t_philo *philo, t_bool is_reaper);
 int		ft_get_time(time_t *time_int);
+
+/*----------------FT_UTILS-----------------*/
+
+int		ft_atoi(const char *str, char alpha_term_allow);
+int		ft_putendl_fd(char *s, int fd);
+void	ft_bzero(void *b, size_t n);
+void	*ft_calloc(size_t count, size_t size);
+int		ft_putnbr_fd(int nb, int fd);
+int		ft_putstr_fd(char *s, int fd);
+void	*ft_memset(void *b, int c, size_t len);
+int		ft_putchar_fd(char c, int fd);
 
 #endif
