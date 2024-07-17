@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 22:32:58 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/16 13:54:43 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/17 14:03:39 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 static int	ft_philo_simulation(t_philo *philo)
 {
+	if (philo->info->nb_philo == 1)
+	{
+		if (ft_print_locked("has taken a fork", philo, true))
+			return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
+	}
 	while (philo->nb_meal_left != 0)
 	{
 		if (ft_philo_eating(philo))
