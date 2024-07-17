@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:41:19 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/16 19:12:09 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/17 11:37:07 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,16 @@ int	free_destroy(int count, t_philo *philo, t_mutex *mutex)
 	{
 		if (pthread_mutex_destroy(mutex->fork + i))
 			return (EXIT_FAILURE);
-		if (pthread_mutex_destroy(mutex->meal_time + i))
+		if (pthread_mutex_destroy(mutex->last_meal + i))
 			return (EXIT_FAILURE);
-		if (pthread_mutex_destroy(mutex->meal_count + i++))
+		if (pthread_mutex_destroy(mutex->meal_left + i++))
 			return (EXIT_FAILURE);
 	}
-	if (pthread_mutex_destroy(&mutex->io))
-		return (EXIT_FAILURE);
-	if (pthread_mutex_destroy(&mutex->stop))
-		return (EXIT_FAILURE);
-	if (pthread_mutex_destroy(&mutex->start))
+	if (pthread_mutex_destroy(&mutex->must_stop))
 		return (EXIT_FAILURE);
 	free(mutex->fork);
-	free(mutex->meal_time);
-	free(mutex->meal_count);
+	free(mutex->last_meal);
+	free(mutex->meal_left);
 	free(philo);
 	return (EXIT_SUCCESS);
 }

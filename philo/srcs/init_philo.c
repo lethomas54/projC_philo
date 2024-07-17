@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:17:16 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/16 19:26:57 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:17:59 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 static int	malloc_mutex_tab(t_info info, t_mutex *mutex)
 {
-	mutex->fork = (pthread_mutex_t *)ft_calloc(info.count,
-			sizeof(pthread_mutex_t));
+	mutex->fork = (pthread_mutex_t *)malloc(info.count
+			* sizeof(pthread_mutex_t));
 	if (mutex->fork == NULL)
 		return (EXIT_FAILURE);
-	mutex->meal_time = (pthread_mutex_t *)ft_calloc(info.count,
-			sizeof(pthread_mutex_t));
-	if (mutex->meal_time == NULL)
+	mutex->last_meal = (pthread_mutex_t *)malloc(info.count
+			* sizeof(pthread_mutex_t));
+	if (mutex->last_meal == NULL)
 		return (EXIT_FAILURE);
-	mutex->meal_count = (pthread_mutex_t *)ft_calloc(info.count,
-			sizeof(pthread_mutex_t));
-	if (mutex->meal_count == NULL)
+	mutex->meal_left = (pthread_mutex_t *)malloc(info.count
+			* sizeof(pthread_mutex_t));
+	if (mutex->meal_left == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -38,68 +38,55 @@ static int	init_mutex(t_info info, t_mutex *mutex)
 	{
 		if (pthread_mutex_init(mutex->fork + i, NULL))
 			return (EXIT_FAILURE);
-		if (pthread_mutex_init(mutex->meal_time + i, NULL))
+		if (pthread_mutex_init(mutex->last_meal + i, NULL))
 			return (EXIT_FAILURE);
-		if (pthread_mutex_init(mutex->meal_count + i++, NULL))
+		if (pthread_mutex_init(mutex->meal_left + i++, NULL))
 			return (EXIT_FAILURE);
 	}
-	if (pthread_mutex_init(&mutex->io, NULL))
-		return (EXIT_FAILURE);
-	if (pthread_mutex_init(&mutex->start, NULL))
-		return (EXIT_FAILURE);
-	if (pthread_mutex_init(&mutex->stop, NULL))
+	if (pthread_mutex_init(&mutex->must_stop, NULL))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-static void	set_sh_ressource(t_sh *sh)
+static void	init_elem(int nb, t_info info, t_mutex *mutex, t_philo *p)
 {
-	sh->can_start = false;
-	sh->must_stop = false;
-	sh->start_time = 0;
-}
-
-static int	init_elem(int nb, t_info info, t_mutex *mutex, t_philo *philo)
-{
-	philo[nb].nb = nb;
-	philo[nb].count = info.count;
-	philo[nb].eat_time = info.eat_time;
-	philo[nb].sleep_time = info.sleep_time;
-	philo[nb].starv_time = info.starv_time;
-	philo[nb].meal_left = info.meal_left;
-	philo[nb].last_meal = 0;
+	p[nb].nb = nb;
+	p[nb].count = info.count;
+	p[nb].eat_time = (time_t)info.eat_time;
+	p[nb].sleep_time = (time_t)info.sleep_time;
+	p[nb].starv_time = (time_t)info.starv_time;
+	p[nb].meal_left = info.meal_left;
 	if (nb == 0)
-		philo[nb].left_fork = &mutex->fork[info.count - 1];
+		p[nb].left_fork = &mutex->fork[info.count - 1];
 	else
-		philo[nb].left_fork = mutex->fork + nb - 1;
-	philo[nb].right_fork = mutex->fork + nb;
-	philo[nb].io = &mutex->io;
-	philo[nb].start = &mutex->start;
-	philo[nb].stop = &mutex->stop;
-	philo[nb].meal_time = mutex->meal_time + nb;
-	philo[nb].meal_count = mutex->meal_count + nb;
-	return (EXIT_SUCCESS);
+		p[nb].left_fork = mutex->fork + nb - 1;
+	p[nb].right_fork = mutex->fork + nb;
+	p[nb].m_ms = &mutex->must_stop;
+	p[nb].m_lm = mutex->last_meal + nb;
+	p[nb].m_ml = mutex->meal_left + nb;
 }
 
-int	init_philo(t_info info, t_sh *sh, t_philo **philo, t_mutex *mutex)
+int	init_philo(t_info info, t_bool *must_stop, t_philo **p, t_mutex *mutex)
 {
-	int	i;
+	int		i;
+	time_t	time;
 
 	i = 0;
-	ft_bzero(mutex, sizeof(t_mutex));
-	*philo = (t_philo *)ft_calloc(info.count, sizeof(t_philo));
-	if (*philo == NULL)
+	*p = (t_philo *)malloc(info.count * sizeof(t_philo));
+	if (*p == NULL)
 		return (EXIT_FAILURE);
-	if (malloc_mutex_tab(info, mutex))
+	if (malloc_mutex_tab(info, mutex)
+		|| init_mutex(info, mutex))
 		return (EXIT_FAILURE);
-	if (init_mutex(info, mutex))
+	*must_stop = false;
+	if (get_time(&time))
 		return (EXIT_FAILURE);
-	set_sh_ressource(sh);
 	while (i < info.count)
 	{
-		(*philo)[i].sh = sh;
-		if (init_elem(i++, info, mutex, *philo))
-			return (EXIT_FAILURE);
+		(*p)[i].must_stop = must_stop;
+		(*p)[i].start_time = time;
+		(*p)[i].last_meal = time;
+		init_elem(i++, info, mutex, *p);
 	}
 	return (EXIT_SUCCESS);
 }

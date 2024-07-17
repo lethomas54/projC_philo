@@ -6,13 +6,13 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:02:39 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/16 19:12:31 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/17 13:19:07 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-static int	set_info(int argc, char **argv, t_info *info)
+static int	arg_parsing(int argc, char **argv, t_info *info)
 {
 	if (argc < 5 || argc > 6)
 		return (EXIT_FAILURE);
@@ -42,14 +42,14 @@ int	main(int argc, char **argv)
 {
 	t_info		info;
 	t_mutex		mutex;
-	t_sh	sh;
+	t_bool		must_stop;
 	t_philo		*philo;
 
-	if (set_info(argc, argv, &info))
+	if (arg_parsing(argc, argv, &info))
 		return (ft_putendl_fd("invalid argument", 2), EXIT_FAILURE);
-	if (init_philo(info, &sh, &philo, &mutex))
+	if (init_philo(info, &must_stop, &philo, &mutex))
 		return (EXIT_FAILURE);
-	if (create_thread(info.count, &sh, philo))
+	if (create_thread(info.count, philo))
 		return (EXIT_FAILURE);
 	if (free_destroy(info.count, philo, &mutex))
 		return (EXIT_FAILURE);
