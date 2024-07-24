@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:03:20 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/17 13:28:31 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/24 14:21:34 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ typedef struct s_philo
 
 /*----------------PROGRAM_STEP-----------------*/
 
-int		init_philo(t_info info, t_bool *must_stop, t_philo **philo,
+int		init_data(t_info info, t_bool *must_stop, t_philo **philo,
 			t_mutex *mutex);
 int		create_thread(int count, t_philo *philo);
 int		free_destroy(int count, t_philo *philo, t_mutex *mutex);
@@ -102,5 +102,7 @@ int		ft_putnbr_fd(int nb, int fd);
 int		ft_putstr_fd(char *s, int fd);
 void	*ft_memset(void *b, int c, size_t len);
 int		ft_putchar_fd(char c, int fd);
+void	*ft_calloc(size_t count, size_t size);
+void	ft_bzero(void *b, size_t n);
 
 #endif

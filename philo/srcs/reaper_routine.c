@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 12:04:31 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/17 12:25:34 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/24 14:43:31 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,23 +60,34 @@ static int	is_complete(t_philo *p, int *p_incomp, t_bool *must_stop)
 	return (EXIT_SUCCESS);
 }
 
-void	*reaper_routine(void *philo_void)
+static int	reaper_simulation(t_philo *p)
 {
 	int			i;
-	t_philo		*p;
 	t_bool		must_stop;
 	int			p_incomp;
 
 	i = 0;
-	p = (t_philo *)philo_void;
 	must_stop = false;
 	p_incomp = p->count;
 	while (must_stop == false)
 	{
 		if (has_died(p + i, &must_stop)
-			|| is_complete(p + i, &p_incomp, &must_stop))
-			return ((void *)EXIT_FAILURE);
+			|| is_complete(p + i, &p_incomp, &must_stop)
+			|| get_must_stop(p->must_stop, &must_stop, p->m_ms))
+			return (EXIT_FAILURE);
 		i = (i + 1) % p[i].count;
 	}
-	return ((void *)EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
+}
+
+void	*reaper_routine(void *p_void)
+{
+	t_philo	*p;
+	int		return_value;
+
+	p = (t_philo *)p_void;
+	return_value = reaper_simulation(p);
+	if (return_value == EXIT_FAILURE)
+		set_must_stop(true, p->must_stop, p->m_ms);
+	return ((void *)(long int)return_value);
 }

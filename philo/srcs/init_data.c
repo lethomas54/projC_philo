@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_philo.c                                       :+:      :+:    :+:   */
+/*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:17:16 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/17 13:17:59 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/24 14:21:11 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 static int	malloc_mutex_tab(t_info info, t_mutex *mutex)
 {
-	mutex->fork = (pthread_mutex_t *)malloc(info.count
-			* sizeof(pthread_mutex_t));
+	mutex->fork = (pthread_mutex_t *)ft_calloc(info.count,
+			sizeof(pthread_mutex_t));
 	if (mutex->fork == NULL)
 		return (EXIT_FAILURE);
-	mutex->last_meal = (pthread_mutex_t *)malloc(info.count
-			* sizeof(pthread_mutex_t));
+	mutex->last_meal = (pthread_mutex_t *)ft_calloc(info.count,
+			sizeof(pthread_mutex_t));
 	if (mutex->last_meal == NULL)
 		return (EXIT_FAILURE);
-	mutex->meal_left = (pthread_mutex_t *)malloc(info.count
-			* sizeof(pthread_mutex_t));
+	mutex->meal_left = (pthread_mutex_t *)ft_calloc(info.count,
+			sizeof(pthread_mutex_t));
 	if (mutex->meal_left == NULL)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -66,19 +66,20 @@ static void	init_elem(int nb, t_info info, t_mutex *mutex, t_philo *p)
 	p[nb].m_ml = mutex->meal_left + nb;
 }
 
-int	init_philo(t_info info, t_bool *must_stop, t_philo **p, t_mutex *mutex)
+int	init_data(t_info info, t_bool *must_stop, t_philo **p, t_mutex *mutex)
 {
 	int		i;
 	time_t	time;
 
 	i = 0;
+	*must_stop = false;
+	ft_bzero(mutex, sizeof(t_mutex));
 	*p = (t_philo *)malloc(info.count * sizeof(t_philo));
 	if (*p == NULL)
 		return (EXIT_FAILURE);
 	if (malloc_mutex_tab(info, mutex)
 		|| init_mutex(info, mutex))
 		return (EXIT_FAILURE);
-	*must_stop = false;
 	if (get_time(&time))
 		return (EXIT_FAILURE);
 	while (i < info.count)

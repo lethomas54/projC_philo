@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:02:39 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/17 13:19:07 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/24 14:21:26 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,18 @@ int	main(int argc, char **argv)
 	t_mutex		mutex;
 	t_bool		must_stop;
 	t_philo		*philo;
+	int			return_value;
 
+	return_value = EXIT_SUCCESS;
 	if (arg_parsing(argc, argv, &info))
-		return (ft_putendl_fd("invalid argument", 2), EXIT_FAILURE);
-	if (init_philo(info, &must_stop, &philo, &mutex))
+	{
+		ft_putendl_fd("Invalid arguments.", 2);
 		return (EXIT_FAILURE);
-	if (create_thread(info.count, philo))
-		return (EXIT_FAILURE);
+	}
+	if (init_data(info, &must_stop, &philo, &mutex)
+		|| create_thread(info.count, philo))
+		return_value = EXIT_FAILURE;
 	if (free_destroy(info.count, philo, &mutex))
-		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
+		return_value = EXIT_FAILURE;
+	return (return_value);
 }
