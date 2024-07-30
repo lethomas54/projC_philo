@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:02:39 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/16 13:54:43 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/30 12:18:37 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ static int	ft_philo_program(int argc, char **argv)
 	is_main_process = true;
 	return_value = EXIT_SUCCESS;
 	if (ft_set_info(argc, argv, &info))
+	{
+		ft_putendl_fd("Invalid arguments.", 2);
 		return (EXIT_FAILURE);
+	}
 	if (ft_open_sem_tab(info, &sem_tab)
 		|| ft_create_children(info, &sem_tab, &child_pid, &is_main_process))
 		return_value = EXIT_FAILURE;
