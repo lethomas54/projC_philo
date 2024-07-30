@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 01:26:29 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/24 14:38:00 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:06:38 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	create_thread(int count, t_philo *p)
 	pthread_t	*thread;
 	int			return_value;
 
-	thread = (pthread_t *)malloc(count + 1 * sizeof(pthread_t));
+	thread = (pthread_t *)malloc((count + 1) * sizeof(pthread_t));
 	if (thread == NULL)
 		return (EXIT_FAILURE);
 	return_value = launch_thread(count, p, thread);
