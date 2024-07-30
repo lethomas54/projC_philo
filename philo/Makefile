@@ -100,8 +100,6 @@ endef
 
 all: $(NAME)
 
-bonus: $(NAME_bonus)
-
 $(NAME): $(OBJ)
 	@$(COMP) $(CFLAGS) $(OBJ) -o $@ -lpthread
 

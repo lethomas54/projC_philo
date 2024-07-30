@@ -6,7 +6,7 @@
 /*   By: lethomas <lethomas@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 21:41:19 by lethomas          #+#    #+#             */
-/*   Updated: 2024/07/24 14:00:53 by lethomas         ###   ########.fr       */
+/*   Updated: 2024/07/30 11:54:58 by lethomas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ static int	destroy(int count, t_mutex *mutex)
 			if (pthread_mutex_destroy(mutex->last_meal + i))
 				return_value = EXIT_FAILURE;
 		if (mutex->meal_left != NULL)
-			if (pthread_mutex_destroy(mutex->meal_left + i++))
+			if (pthread_mutex_destroy(mutex->meal_left + i))
 				return_value = EXIT_FAILURE;
+		i++;
 	}
 	if (pthread_mutex_destroy(&mutex->must_stop))
 		return_value = EXIT_FAILURE;

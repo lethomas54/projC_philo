@@ -17,7 +17,7 @@ INCS		:= $(addprefix ./includes/, $(INC))
 
 all: $(NAME)
 
-$(NAME): $(OBJ) Makefile
+$(NAME): $(OBJ)
 	@$(COMP) $(CFLAGS) $(OBJ) -o $@ -lpthread
 	@echo "\033[0;34m$(NAME) compilation: \033[0;32mOK\033[0;0m"
 
